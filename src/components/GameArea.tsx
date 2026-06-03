@@ -45,12 +45,13 @@ export default function GameArea({
   // Initialize questions when starting a chapter
   const startChapterMission = (chapterId: string, infinite = false) => {
     setIsInfiniteMode(infinite);
-    const count = infinite ? 1 : 5; // sets of 5 for quests
+    const count = infinite ? 1 : 15; // sets of 15 for quests
     const initialQuestions: MathQuestion[] = [];
     
     // Generate questions
     for (let i = 0; i < count; i++) {
-      const difficulty = i < 2 ? "easy" : i < 4 ? "medium" : "hard";
+      // 0-4: easy, 5-9: medium, 10-14: hard (Olympiad-tier challenges!)
+      const difficulty = i < 5 ? "easy" : i < 10 ? "medium" : "hard";
       initialQuestions.push(generateQuestion(chapterId, difficulty, progress.classLevel));
     }
     
@@ -218,7 +219,7 @@ export default function GameArea({
           <div className="relative z-10">
             <h3 className="font-sans font-black text-2xl uppercase tracking-wider text-yellow-300">Quest Guide Map</h3>
             <p className="text-xs text-indigo-100 font-bold max-w-lg mt-1">
-              Select an educational study sector below to launch a 5-question quest or enter the unlimited Sandbox!
+              Select an educational study sector below to launch a 15-question quest or enter the unlimited Sandbox!
             </p>
           </div>
           <div className="relative z-10 shrink-0 bg-pink-500 text-white font-black text-xs px-4 py-2 border-2 border-pink-700/60 rounded-full shadow-md uppercase tracking-wider rotate-[-1deg]">
@@ -338,8 +339,8 @@ export default function GameArea({
             <span className="text-xs font-black text-indigo-900/60 font-sans uppercase tracking-wider">
               Quest Progress:
             </span>
-            <div className="flex gap-2">
-              {Array.from({ length: 5 }).map((_, i) => {
+            <div className="flex gap-1.5 flex-wrap max-w-sm sm:max-w-none">
+              {Array.from({ length: questions.length }).map((_, i) => {
                 const isActive = i === currentQuestionIndex;
                 const isLogged = i < scoreHistory.length;
                 const wasCorrect = scoreHistory[i];
@@ -347,7 +348,7 @@ export default function GameArea({
                 return (
                   <div
                     key={i}
-                    className={`w-7 h-7 rounded-xl border-3 flex items-center justify-center transition-all text-xs font-extrabold ${
+                    className={`w-6.5 h-6.5 rounded-xl border-2 flex items-center justify-center transition-all text-[11px] font-extrabold ${
                       isActive 
                         ? "bg-yellow-300 border-yellow-600 text-yellow-950 ring-4 ring-yellow-200 animate-pulse scale-105" 
                         : isLogged 

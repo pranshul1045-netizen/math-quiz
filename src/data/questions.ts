@@ -104,10 +104,458 @@ function getFactors(num: number): number[] {
   return factors;
 }
 
+function generateOlympiadQuestion(chapterId: string, classLevel: ClassLevel, id: string): MathQuestion {
+  const rand = Math.random();
+
+  switch (chapterId) {
+    case "number_system": {
+      if (rand < 0.33) {
+        // Olympiad sum of prime factors
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nFind the sum of all the distinct prime factors of the composite number **210**.",
+          type: "choice",
+          options: ["15", "17", "21", "24"],
+          correctAnswer: "17",
+          hint: "Perform a prime factorization of 210. Identify all base prime numbers and add them.",
+          explanation: "Let's perform the prime factorization of 210 step-by-step:\n\n" +
+            "• Step 1: 210 is even, so divide by 2: $$210 = 2 \\times 105$$\n" +
+            "• Step 2: 105 ends in 5, so divide by 5: $$105 = 5 \\times 21$$\n" +
+            "• Step 3: 21 is divisible by 3: $$21 = 3 \\times 7$$\n\n" +
+            "Now all factors are prime numbers: **2, 3, 5, and 7**.\n\n" +
+            "• Step 4: Sum of these distinct prime factors: \n" +
+            "  $$2 + 3 + 5 + 7 = 17$$\n\n" +
+            "Therefore, the sum is **17**!",
+          visualType: "factor_tree",
+          visualData: { number: 210, isPrime: false }
+        };
+      } else if (rand < 0.66) {
+        // Olympiad AB + BA puzzle
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nIn the cryptarithm ledger equation **AB + BA = 143**, where A and B represent distinct, non-zero whole-number digits, what is the maximum possible product value of **A × B**?",
+          type: "choice",
+          options: ["36", "40", "42", "45"],
+          correctAnswer: "42",
+          hint: "Write AB as 10A + B and BA as 10B + A. Solve for A + B first, then find the digit pair that maximizes the product!",
+          explanation: "Let's solve this Digit Logic Cryptarithm:\n\n" +
+            "1. Express the place values:\n" +
+            "   $$AB = 10A + B$$\n" +
+            "   $$BA = 10B + A$$\n\n" +
+            "2. Sum them together:\n" +
+            "   $$AB + BA = (10A + B) + (10B + A) = 11 A + 11 B = 11(A + B) = 143$$\n\n" +
+            "3. Divide by 11 to solve for A + B:\n" +
+            "   $$A + B = 143 \\div 11 = 13$$\n\n" +
+            "4. List matching sets of distinct, non-zero single digits (A, B) that sum up to 13:\n" +
+            "   • Pairs: (9, 4), (8, 5), (7, 6)\n" +
+            "   • Products ($A \\times B$):\n" +
+            "     - $$9 \\times 4 = 36$$\n" +
+            "     - $$8 \\times 5 = 40$$\n" +
+            "     - $$7 \\times 6 = 42$$\n\n" +
+            "The largest possible product is **42** (achieved when the digits are 7 and 6)!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "11 × (A + B)", rightExpr: "143" }
+        };
+      } else {
+        // Olympiad Nested Fractions
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nSimplify the nested fraction equation to find its value:\n\n $$1 + \\frac{1}{1 + \\frac{1}{1 + \\frac{1}{2}}}$$",
+          type: "choice",
+          options: ["5/3", "8/5", "13/8", "7/5"],
+          correctAnswer: "8/5",
+          hint: "Work from the bottommost fraction upwards! Solve 1 + 1/2 first, then reciprocal, and repeat.",
+          explanation: "Let's unravel this nested fraction stage by stage from the bottom up:\n\n" +
+            "• Step 1 (Bottom fraction):\n" +
+            "  $$1 + \\frac{1}{2} = \\frac{3}{2}$$\n\n" +
+            "• Step 2 (Take reciprocal of 3/2):\n" +
+            "  $$\\frac{1}{3/2} = \\frac{2}{3}$$\n\n" +
+            "• Step 3 (Add 1 to 2/3):\n" +
+            "  $$1 + \\frac{2}{3} = \\frac{5}{3}$$\n\n" +
+            "• Step 4 (Take reciprocal of 5/3):\n" +
+            "  $$\\frac{1}{5/3} = \\frac{3}{5}$$\n\n" +
+            "• Step 5 (Final addition):\n" +
+            "  $$1 + \\frac{3}{5} = \\frac{8}{5}$$\n\n" +
+            "So, the simplified form is **8/5**!",
+          visualType: "fraction_pizza",
+          visualData: { numerator: 8, denominator: 5, simplifiedNumerator: 8, simplifiedDenominator: 5 }
+        };
+      }
+    }
+
+    case "simplification": {
+      if (rand < 0.5) {
+        // Olympiad division/multiplication chain
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nDetermine the exact value of the telescoping multiplication sequence:\n\n$$\\left(1 - \\frac{1}{2}\\right) \\times \\left(1 - \\frac{1}{3}\\right) \\times \\left(1 - \\frac{1}{4}\\right) \\times \\dots \\times \\left(1 - \\frac{1}{50}\\right)$$",
+          type: "choice",
+          options: ["1/2", "1/50", "49/50", "1/100"],
+          correctAnswer: "1/50",
+          hint: "Rewrite each term inside the brackets as a simple fraction, then look at which numerators and denominators cancel out!",
+          explanation: "Let's simplify each bracket term and observe the multiplication pattern:\n\n" +
+            "• Bracket 1: $1 - 1/2 = 1/2$\n" +
+            "• Bracket 2: $1 - 1/3 = 2/3$\n" +
+            "• Bracket 3: $1 - 1/4 = 3/4$\n" +
+            "• ...\n" +
+            "• Bracket 49: $1 - 1/50 = 49/50$\n\n" +
+            "Write the product sequence:\n" +
+            "  $$\\frac{1}{2} \\times \\frac{2}{3} \\times \\frac{3}{4} \\times \\dots \\times \\frac{49}{50}$$\n\n" +
+            "Notice how the denominator of each fraction cancels out with the numerator of the next fraction:\n" +
+            "We have $1/2 \\times 2/3 \\times 3/4 ... \\times 49/50$.\n\n" +
+            "Only the very first numerator (**1**) and the very last denominator (**50**) remain uncanceled!\n\n" +
+            "Thus, the final telescoping fraction yields **1/50**!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "Product Sequence", rightExpr: "1/50" }
+        };
+      } else {
+        // Nested brackets
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nEvaluate the highly-ordered numerical expression using BODMAS priority order:\n\n $$120 \\div [ 18 - \\{ 6 \\times (10 - 2 \\times 4) + 2 \\} ]$$",
+          type: "choice",
+          options: ["10", "15", "30", "60"],
+          correctAnswer: "30",
+          hint: "Deal with brackets innermost first: () parentheses first, then curly {}, and lastly square brackets [].",
+          explanation: "Let's perform the operations layer by layer:\n\n" +
+            "• Step 1: Inside the parentheses `(10 - 2 × 4)`:\n" +
+            "  Execute multiply first: $$10 - 8 = 2$$\n\n" +
+            "• Step 2: Inside the curly braces `\\{ 6 × 2 + 2 \\}`:\n" +
+            "  Execute multiply first: $$12 + 2 = 14$$\n\n" +
+            "• Step 3: Inside the square brackets `[ 18 - 14 ]`:\n" +
+            "  Execute subtraction: $$18 - 14 = 4$$\n\n" +
+            "• Step 4: Final outer division:\n" +
+            "  $$120 \\div 4 = 30$$\n\n" +
+            "Thus, the simplified result of the expression is **30**!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "120 ÷ [ 18 - 14 ]", rightExpr: "30" }
+        };
+      }
+    }
+
+    case "ratio": {
+      if (rand < 0.5) {
+        // Changing Ratio Red to Green
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nIn a local classroom, the ratio of the number of boys to girls is **3 : 2**. After **6 more girls** register in the class, the new ratio of boys to girls becomes **1 : 1**. How many boys are registered in this class?",
+          type: "choice",
+          options: ["12", "15", "18", "24"],
+          correctAnswer: "18",
+          hint: "Set the initial number of boys as 3X and girls as 2X. Add 6 to the girls, set the ratio to 1/1, and solve for X!",
+          explanation: "Let's solve using algebra ratio equations:\n\n" +
+            "• Step 1: Let the number of boys initially be **3X** and girls initially be **2X**.\n" +
+            "• Step 2: After 6 girls register, the count of girls is $$2X + 6$$.\n" +
+            "• Step 3: The new ratio becomes 1 : 1, which means the count of boys and girls is equal:\n" +
+            "  $$3X = 2X + 6$$\n" +
+            "• Step 4: Subtract 2X from both sides to find X:\n" +
+            "  $$X = 6$$\n\n" +
+            "• Step 5: Now calculate the total boys:\n" +
+            "  $$Boys = 3X = 3 \\times 6 = 18$$\n\n" +
+            "Hence, there are **18 boys** in the class!",
+          visualType: "ratio_grid",
+          visualData: { leftCount: 18, rightCount: 18, leftSimp: 1, rightSimp: 1 }
+        };
+      } else {
+        // David Age Shifting Ratio
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nFour years ago, the ratio of David's age to Ethan's age was **3 : 4**. Five years from now, the combined sum of their ages will be **39**. How old is David now?",
+          type: "choice",
+          options: ["10", "13", "16", "20"],
+          correctAnswer: "13",
+          hint: "Let David and Ethan's ages 4 years ago be 3X and 4X. Express their current ages and their ages in 5 years, then sum them to 39!",
+          explanation: "Let's trace their ages step-by-step:\n\n" +
+            "• **4 Years Ago**: Let David's age be $$3X$$ and Ethan's age be $$4X$$.\n" +
+            "• **Current Ages**: David is $$3X + 4$$; Ethan is $$4X + 4$$.\n" +
+            "• **5 Years from Now**: David will be $$3X + 9$$; Ethan will be $$4X + 9$$.\n\n" +
+            "Given that in 5 years, their combined age is 39:\n" +
+            "  $$(3X + 9) + (4X + 9) = 39$$\n" +
+            "  $$7X + 18 = 39$$\n" +
+            "  $$7X = 21 \\implies X = 3$$\n\n" +
+            "• David's current age is:\n" +
+            "  $$3X + 4 = 3(3) + 4 = 13 \\text{ years old}$$.\n\n" +
+            "So David is currently **13** years old!",
+          visualType: "ratio_grid",
+          visualData: { leftCount: 13, rightCount: 16 }
+        };
+      }
+    }
+
+    case "average": {
+      if (rand < 0.5) {
+        // Teacher average weight
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nThe average weight of a group of **9 students** is **30 kg**. When their class teacher joins the room, the average weight of the entire group increases by **2 kg**. What is the weight of the class teacher?",
+          type: "choice",
+          options: ["40 kg", "45 kg", "50 kg", "52 kg"],
+          correctAnswer: "50 kg",
+          hint: "Find the total weight of the 9 students first. Then find the new total weight of 10 people with the new average!",
+          explanation: "Let's use the sum of average formulae:\n\n" +
+            "• Step 1: Initial sum of weights of 9 students:\n" +
+            "  $$Total\\_Weight\\_{9} = 9 \\times 30 = 270\\text{ kg}$$\n\n" +
+            "• Step 2: The teacher joins, making the count **10** people. The average increases by 2, so the new average is $$30 + 2 = 32\\text{ kg}$$.\n" +
+            "• Step 3: Total weight of all 10 people:\n" +
+            "  $$Total\\_Weight\\_{10} = 10 \\times 32 = 320\\text{ kg}$$\n\n" +
+            "• Step 4: Subtract the student sum from the total sum to find the teacher's weight:\n" +
+            "  $$Teacher\\text{'s Weight} = 320 - 270 = 50\\text{ kg}$$\n\n" +
+            "Hence, the teacher weighs **50 kg**!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "Total 10 people (320kg)", rightExpr: "Teacher (50kg) + Students" }
+        };
+      } else {
+        // Consecutive numbers product
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nThe average value of five consecutive integers is **24**. What is the product of the smallest and largest of these five integers?",
+          type: "choice",
+          options: ["480", "528", "572", "600"],
+          correctAnswer: "572",
+          hint: "For consecutive numbers, the median/middle number is equal to their average! Find the two numbers before 24 and two after.",
+          explanation: "Let's find the five consecutive integers:\n\n" +
+            "1. Because they are consecutive, the average value (24) is exactly the middle integer (3rd number).\n" +
+            "2. Therefore, the five consecutive numbers are: **22, 23, 24, 25, 26**.\n" +
+            "3. Identify the parameters:\n" +
+            "   • Smallest integer = **22**\n" +
+            "   • Largest integer = **26**\n\n" +
+            "4. Calculate their numerical product:\n" +
+            "   $$Product = 22 \\times 26 = 572$$\n\n" +
+            "So, the product of the bounds is **572**!",
+          visualType: "number_line",
+          visualData: { activeValue: 24, start: 22, jump: 4, result: 26 }
+        };
+      }
+    }
+
+    case "profit_loss": {
+      if (rand < 0.5) {
+        // CP of 15 is SP of 12
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nIf the Cost Price of **15 craft boxes** is exactly equal to the Selling Price of **12 craft boxes**, what is the exact Profit Percentage incurred?",
+          type: "choice",
+          options: ["15%", "20%", "25%", "33.3%"],
+          correctAnswer: "25%",
+          hint: "Assume Cost Price of 1 box is $1. Calculate the Profit earned upon selling 12 boxes, then compute Profit % over the cost price of those 12 boxes!",
+          explanation: "Let's perform the derivation step-by-step:\n\n" +
+            "• Step 1: Let the Cost Price (CP) of 1 craft box be **$1**.\n" +
+            "• Step 2: Then, CP of 15 craft boxes = **$15**.\n" +
+            "• Step 3: By the given statement, Selling Price (SP) of 12 craft boxes = CP of 15 craft boxes = **$15**.\n" +
+            "• Step 4: Now find the actual Cost Price of those 12 sold boxes:\n" +
+            "  $$CP\\text{ of 12 boxes} = \\$12$$\n" +
+            "• Step 5: Profit on selling 12 boxes:\n" +
+            "  $$Profit = SP - CP = \\$15 - \\$12 = \\$3$$\n" +
+            "• Step 6: Solve for Profit Percentage:\n" +
+            "  $$Profit\\% = \\left( \\frac{\\text{Profit}}{\\text{Cost Price}} \\right) \\times 100\\% = \\left( \\frac{3}{12} \\right) \\times 100\\% = 25\\%$$\n\n" +
+            "Thus, the profit percentage is **25%**!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "Profit $3", rightExpr: "25% of cost" }
+        };
+      } else {
+        // Double successive discount
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nAn exquisite mathematical calculator is offered with two successive discounts: first **20%**, followed by an additional **10%** discount on top of the reduced price. What is the equivalent single discount percentage?",
+          type: "choice",
+          options: ["30%", "28%", "25%", "27%"],
+          correctAnswer: "28%",
+          hint: "Do not just add 20% and 10%! Apply 20% discount on a base price of $100 first, then apply 10% on that intermediate value.",
+          explanation: "Let's map successive discount rates starting with an assumed original price of **$100**:\n\n" +
+            "• Step 1: Apply the first discount of 20%:\n" +
+            "  $$Discount\\_1 = 20\\% \\text{ of } 100 = \\$20$$\n" +
+            "  $$Intermediate\\_Price = 100 - 20 = \\$80$$\n\n" +
+            "• Step 2: Apply the second discount of 10% on the new price ($80):\n" +
+            "  $$Discount\\_2 = 10\\% \\text{ of } 80 = \\$8$$\n" +
+            "  $$Final\\_Price = 80 - 8 = \\$72$$\n\n" +
+            "• Step 3: Calculate the total discount value from initial price:\n" +
+            "  $$Total\\_Discount = 100 - 72 = \\$28\\text{ (which is 28% of $100)}$$\n\n" +
+            "So, the dual discounts are equivalent to a single **28%** discount!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "100 → 80 → 72", rightExpr: "28% Discount" }
+        };
+      }
+    }
+
+    case "area_perimeter": {
+      if (rand < 0.5) {
+        // Path Area around Square
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nA square mathematical sandbox garden has sides of **10 meters**. A flat path of uniform width **2 meters** is paved all around the OUTSIDE of the garden. What is the area of this path?",
+          type: "choice",
+          options: ["40 sq m", "80 sq m", "96 sq m", "144 sq m"],
+          correctAnswer: "96 sq m",
+          hint: "Determine the area of the small garden first. Then calculate the size of the larger square (including the path of 2m on BOTH sides).",
+          explanation: "Let's calculate the areas nested inside each other:\n\n" +
+            "• Step 1: Area of the inner garden:\n" +
+            "  $$Inner\\_Area = 10 \\times 10 = 100\\text{ sq meters}$$\n\n" +
+            "• Step 2: Determine length of outer boundary. The path is 2m wide on ALL sides, so add 2m twice to the side length:\n" +
+            "  $$Outer\\_Side = 10 + 2 + 2 = 14\\text{ meters}$$\n\n" +
+            "• Step 3: Area of the large outer boundary square:\n" +
+            "  $$Outer\\_Area = 14 \\times 14 = 196\\text{ sq meters}$$\n\n" +
+            "• Step 4: Subtract to isolate path area:\n" +
+            "  $$Path\\_Area = Outer\\_Area - Inner\\_Area = 196 - 100 = 96\\text{ sq meters}$$\n\n" +
+            "Hence, the area of the paved path is **96 sq m**!",
+          visualType: "shape_geometry",
+          visualData: { shape: "rectangle", length: 14, width: 14, label: "Area" }
+        };
+      } else {
+        // Perimeter cross shaped paper
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nA large rectangular sheet of paper has dimensions **20 cm by 12 cm**. Out of each of its four corners, a small square of side **3 cm** is cut off. What is the **Perimeter** of the remaining cross-shaped sheet?",
+          type: "choice",
+          options: ["40 cm", "52 cm", "64 cm", "88 cm"],
+          correctAnswer: "64 cm",
+          hint: "When you cut out a corner square, the boundaries are just pushed inward but remain identical in length! The outer perimeter doesn't change.",
+          explanation: "Let's analyze the geometry boundary path of the cut-out corners:\n\n" +
+            "• When a square of side 3cm is cut from a corner, the horizontal cut and vertical cut replace the outer edges of the corner.\n" +
+            "• More specifically, the two cut lines 'fold' inward. The length of the boundary pushed in is identical to the length of the edge removed!\n\n" +
+            "Therefore, the perimeter remains exactly the same as the original, uncut rectangle:\n" +
+            "  $$Perimeter = 2 \\times (Length + Width) = 2 \\times (20 + 12) = 2 \\times 32 = 64\\text{ cm}$$\n\n" +
+            "So, the cross-shape perimeter is **64 cm**!",
+          visualType: "shape_geometry",
+          visualData: { shape: "rectangle", length: 20, width: 12, label: "Perimeter" }
+        };
+      }
+    }
+
+    case "measurements": {
+      if (rand < 0.5) {
+        // Wooden blocks packing
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nHow many solid wooden cubes of side **5 cm** can be completely packed inside a large rectangular toy chest of dimensions **1 meter long, 30 cm wide, and 20 cm high**?",
+          type: "choice",
+          options: ["240", "400", "480", "600"],
+          correctAnswer: "480",
+          hint: "First convert 1 meter to centimeters (100 cm). Then, divide each chest dimension by the 5 cm side of the cube to see how many cubes fit in each direction!",
+          explanation: "Let's pack the chest along each physical dimension axis:\n\n" +
+            "1. **Convert units**: Length is 1 meter = **100 cm**.\n" +
+            "2. **Cubes along Length**: $$100\\text{ cm} \\div 5\\text{ cm} = 20\\text{ cubes}$$\n" +
+            "3. **Cubes along Width**: $$30\\text{ cm} \\div 5\\text{ cm} = 6\\text{ cubes}$$\n" +
+            "4. **Cubes along Height**: $$20\\text{ cm} \\div 5\\text{ cm} = 4\\text{ cubes}$$\n\n" +
+            "5. Multiply these distributions together for total volume fit:\n" +
+            "   $$Total\\_Cubes = 20 \\times 6 \\times 4 = 480\\text{ cubes}$$\n\n" +
+            "So, exactly **480** cubes can fit inside!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "Chest volume (60k)", rightExpr: "480 Cubes fit" }
+        };
+      } else {
+        // Liters flow conversion
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nLemonade juice is leaking from an industrial pipe at a constant rate of **1.2 Liters per minute**. How many Liters of lemonade will leak outward in exactly **2.5 hours**?",
+          type: "choice",
+          options: ["150 L", "180 L", "210 L", "300 L"],
+          correctAnswer: "180 L",
+          hint: "Convert 2.5 hours into minutes by multiplying by 60 first. Then multiply those minutes by the leak rate of 1.2 L per minute!",
+          explanation: "Let's perform the time and rate calculation:\n\n" +
+            "• Step 1: Convert hours to minutes:\n" +
+            "  $$2.5\\text{ hours} \\times 60\\text{ min/hour} = 150\\text{ minutes}$$\n\n" +
+            "• Step 2: Multiply minutes by flow rate:\n" +
+            "  $$Total\\_Leaked = 150\\text{ minutes} \\times 1.2\\text{ L/minute} = 180\\text{ Liters}$$\n\n" +
+            "Therefore, the pipe leaks **180 L** of juice!",
+          visualType: "balance_scale",
+          visualData: { leftExpr: "1.2 L / min for 150m", rightExpr: "180 Liters" }
+        };
+      }
+    }
+
+    case "data_analysis": {
+      if (rand < 0.5) {
+        // Venn Diagram playing games
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nIn an elite mathematics summer camp of **40 students**, **24 play chess** and **18 play Scrabble**. If **6 students play neither** game, how many students play BOTH chess and Scrabble?",
+          type: "choice",
+          options: ["4", "6", "8", "12"],
+          correctAnswer: "8",
+          hint: "Determine the total count of students playing at least one game (40 - 6). Then use the addition rule: (Chess + Scrabble) - Both = At least one.",
+          explanation: "Let's solve chess/scrabble double-counts using Venn Sets:\n\n" +
+            "• Step 1: Find candidates playing at least one game:\n" +
+            "  $$At\\_Least\\_One = 40\\text{ (total)} - 6\\text{ (neither)} = 34\\text{ students}$$\n\n" +
+            "• Step 2: Let X be students playing BOTH chess and Scrabble:\n" +
+            "  $$Chess + Scrabble - X = 34$$\n" +
+            "  $$24 + 18 - X = 34$$\n" +
+            "  $$42 - X = 34$$\n" +
+            "  $$X = 42 - 34 = 8\\text{ students}$$\n\n" +
+            "So, exactly **8 students** play both games!",
+          visualType: "ratio_grid",
+          visualData: { leftCount: 24, rightCount: 18 }
+        };
+      } else {
+        // Stats integers: Mode 5, Median 6, Avg 7
+        return {
+          id,
+          chapterId,
+          classLevel,
+          questionText: "⭐ Olympiad Challenge ⭐\n\nA sorted set of four positive integers has a unique mode of **5**, a median of **6**, and an average of **7**. What is the value of the largest integer in this set?",
+          type: "choice",
+          options: ["9", "10", "11", "12"],
+          correctAnswer: "11",
+          hint: "Set numbers as A, B, C, D in ascending order. Mode 5 means A = B = 5. Median 6 gives C. Sum gives D!",
+          explanation: "Let's solve for the four integers (A, B, C, D) in ascending order:\n\n" +
+            "1. **Unique Mode is 5**: The common number appearing most is 5, meaning at least two must be 5. Since median is 6: $$A = 5, B = 5$$\n\n" +
+            "2. **Median is 6**: The median is the average of B and C:\n" +
+            "   $$\\frac{B + C}{2} = 6 \\implies \\frac{5 + C}{2} = 6 \\implies C = 7$$\n\n" +
+            "3. **Average is 7**: The sum of all four integers is $$4 \\times 7 = 28$$:\n" +
+            "   $$A + B + C + D = 28$$\n" +
+            "   $$5 + 5 + 7 + D = 28$$\n" +
+            "   $$17 + D = 28 \\implies D = 11$$\n\n" +
+            "The set is [5, 5, 7, 11]. The largest integer in the set is indeed **11**!",
+          visualType: "ratio_grid",
+          visualData: { leftCount: 5, rightCount: 11 }
+        };
+      }
+    }
+
+    default:
+      throw new Error(`Invalid chapterId in Olympiad: ${chapterId}`);
+  }
+}
+
 // Procedural generator to create endless questions for all 8 syllabus chapters
 export function generateQuestion(chapterId: string, level: "easy" | "medium" | "hard", classLevel: ClassLevel): MathQuestion {
   const rand = Math.random();
   const id = `q_${chapterId}_${classLevel}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+  if (level === "hard") {
+    return generateOlympiadQuestion(chapterId, classLevel, id);
+  }
 
   switch (chapterId) {
     case "number_system": {
