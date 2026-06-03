@@ -121,17 +121,17 @@ export default function GameArea({
     if (nextXp >= 50 && !badgeIdsUpdated.includes("apprentice")) {
       badgeIdsUpdated.push("apprentice");
     }
-    if (question.chapterId === "factors_multiples" && chapterScoresCopy["factors_multiples"].xp >= 150 && !badgeIdsUpdated.includes("factor_master")) {
-      badgeIdsUpdated.push("factor_master");
+    if (question.chapterId === "number_system" && chapterScoresCopy["number_system"]?.xp >= 150 && !badgeIdsUpdated.includes("number_master")) {
+      badgeIdsUpdated.push("number_master");
     }
-    if (question.chapterId === "fractions" && chapterScoresCopy["fractions"].xp >= 200 && !badgeIdsUpdated.includes("fraction_master")) {
-      badgeIdsUpdated.push("fraction_master");
+    if (question.chapterId === "ratio" && chapterScoresCopy["ratio"]?.xp >= 200 && !badgeIdsUpdated.includes("ratio_master")) {
+      badgeIdsUpdated.push("ratio_master");
     }
-    if (question.chapterId === "decimals" && chapterScoresCopy["decimals"].xp >= 250 && !badgeIdsUpdated.includes("dec_master")) {
-      badgeIdsUpdated.push("dec_master");
+    if (question.chapterId === "average" && chapterScoresCopy["average"]?.xp >= 250 && !badgeIdsUpdated.includes("average_master")) {
+      badgeIdsUpdated.push("average_master");
     }
-    if (question.chapterId === "algebra" && chapterScoresCopy["algebra"].xp >= 250 && !badgeIdsUpdated.includes("algebra_sage")) {
-      badgeIdsUpdated.push("algebra_sage");
+    if (question.chapterId === "profit_loss" && chapterScoresCopy["profit_loss"]?.xp >= 250 && !badgeIdsUpdated.includes("profit_loss_master")) {
+      badgeIdsUpdated.push("profit_loss_master");
     }
     if (nextXp >= 1000 && !badgeIdsUpdated.includes("math_genius")) {
       badgeIdsUpdated.push("math_genius");

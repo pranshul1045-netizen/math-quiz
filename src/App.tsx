@@ -177,7 +177,7 @@ export default function App() {
                 >
                   <Star fill={tempGrade === 5 ? "#d97706" : "transparent"} size={18} className="text-amber-600" />
                   <span className="text-sm font-black uppercase tracking-tight">Grade 5</span>
-                  <span className="text-[9px] leading-tight opacity-80 font-medium">Pizza Fractions & Decimals</span>
+                  <span className="text-[9px] leading-tight opacity-80 font-bold">Numbers, Simplification, Ratio & Average</span>
                 </button>
 
                 <button
@@ -192,7 +192,7 @@ export default function App() {
                 >
                   <Trophy fill={tempGrade === 6 ? "#7c3aed" : "transparent"} size={18} className="text-violet-600" />
                   <span className="text-sm font-black uppercase tracking-tight">Grade 6</span>
-                  <span className="text-[9px] leading-tight opacity-80 font-medium">Integers, Algebra & Ratios</span>
+                  <span className="text-[9px] leading-tight opacity-80 font-bold">Profit & Loss, Area, Measurement & Data</span>
                 </button>
               </div>
             </div>
