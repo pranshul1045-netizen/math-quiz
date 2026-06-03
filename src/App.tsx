@@ -137,7 +137,7 @@ export default function App() {
           </div>
 
           <div className="space-y-1.5 pt-2">
-            <h1 className="text-3xl font-black uppercase tracking-wider text-indigo-950">Math Quest</h1>
+            <h1 className="text-3xl font-black uppercase tracking-wider text-indigo-950">Math by Jaishnavi</h1>
             <p className="text-xs text-indigo-500 font-bold uppercase tracking-widest">Interactive Class 5 & 6 Playroom</p>
           </div>
 
@@ -231,7 +231,7 @@ export default function App() {
               📐
             </div>
             <div>
-              <h1 className="text-2xl font-black uppercase tracking-wider text-white">Math Quest</h1>
+              <h1 className="text-2xl font-black uppercase tracking-wider text-white">Math by Jaishnavi</h1>
               <p className="text-indigo-200 font-bold uppercase text-[10px] tracking-widest">Class 5 & 6 Practice Arena</p>
             </div>
           </div>
