@@ -1,0 +1,6 @@
+{
+  "name": "Class 5 and 6 Math Game",
+  "description": "An interactive and gamified math learning system covering Class 5 and 6 topics like Fractions, Decimals, Algebra, Integers, Factors & Multiples, and Geometry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
