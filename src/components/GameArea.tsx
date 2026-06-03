@@ -9,7 +9,7 @@ import { generateQuestion, calculateLevel, getLevelTitle } from "../data/questio
 import VisualAids from "./VisualAids";
 import { 
   ArrowRight, Sparkles, Award, Compass, HelpCircle, 
-  Lightbulb, RotateCcw, Check, X, LogIn, ChevronRight, Play, Info
+  Lightbulb, RotateCcw, Check, X, LogIn, ChevronRight, Play, Info, Trophy
 } from "lucide-react";
 
 interface GameAreaProps {
@@ -50,8 +50,8 @@ export default function GameArea({
     
     // Generate questions
     for (let i = 0; i < count; i++) {
-      // 0-4: easy, 5-9: medium, 10-14: hard (Olympiad-tier challenges!)
-      const difficulty = i < 5 ? "easy" : i < 10 ? "medium" : "hard";
+      // In Olympiad Arena, ALL questions are extremely difficult Olympiad-tier (hard). Otherwise standard progression.
+      const difficulty = chapterId === "olympiad_arena" ? "hard" : (i < 5 ? "easy" : i < 10 ? "medium" : "hard");
       initialQuestions.push(generateQuestion(chapterId, difficulty, progress.classLevel));
     }
     
@@ -155,7 +155,8 @@ export default function GameArea({
     
     if (isInfiniteMode) {
       // Infinite mode generates a new randomized question instantly
-      const nextQ = generateQuestion(activeChapterId!, "medium", progress.classLevel);
+      const difficulty = activeChapterId === "olympiad_arena" ? "hard" : "medium";
+      const nextQ = generateQuestion(activeChapterId!, difficulty, progress.classLevel);
       setQuestions([nextQ]);
       setCurrentQuestionIndex(0);
       setSelectedOption(null);
@@ -203,7 +204,14 @@ export default function GameArea({
     onSetActiveChapterId(null);
   };
 
-  const activeChapter = chapters.find((ch) => ch.id === activeChapterId);
+  const activeChapter = chapters.find((ch) => ch.id === activeChapterId) || (activeChapterId === "olympiad_arena" ? {
+    id: "olympiad_arena",
+    name: "👑 THE OLYMPIAD CHAMPIONS ARENA 👑",
+    classLevel: progress.classLevel,
+    description: "Elite level Olympiad challenges spanning all math topics. Only for the bravest minds!",
+    color: "from-amber-600 to-yellow-500",
+    skills: ["Elite Logical Cryptarithms", "Advanced Number Sequences", "Complex Geometry Paths", "Venn Logic & Advanced Stats"]
+  } : undefined);
   const currentQuestion = questions[currentQuestionIndex];
 
   // Render Syllabus Navigation Map
@@ -224,6 +232,94 @@ export default function GameArea({
           </div>
           <div className="relative z-10 shrink-0 bg-pink-500 text-white font-black text-xs px-4 py-2 border-2 border-pink-700/60 rounded-full shadow-md uppercase tracking-wider rotate-[-1deg]">
             Lvl {progress.level} • {getLevelTitle(progress.level)}
+          </div>
+        </div>
+
+        {/* 👑 Dedicated Elite Olympiad Challenge Arena 👑 */}
+        <div
+          id="olympiad-champions-arena"
+          className="bg-indigo-950 text-indigo-950 rounded-[40px] border-4 border-yellow-400 shadow-[0_12px_0_0_#312e81] overflow-hidden flex flex-col justify-between hover:scale-[1.005] transition-all"
+        >
+          {/* Header Banner */}
+          <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 p-6 text-white space-y-2 relative border-b-4 border-yellow-400">
+            <div className="absolute right-0 top-0 opacity-15 translate-x-4 -translate-y-4 text-8xl font-black select-none pointer-events-none">
+              🏆
+            </div>
+            <div className="flex justify-between items-start">
+              <span className="text-[10px] font-black uppercase text-yellow-200 tracking-widest leading-none bg-indigo-950/50 px-3 py-1.5 rounded-full border border-yellow-400/40">
+                ⭐ SPECIAL ELITE LEAGUE ⭐
+              </span>
+              {progress.badgeIds.includes("olympiad_conqueror") && (
+                <span className="bg-yellow-400 text-indigo-950 border-2 border-indigo-950 text-[10px] font-black px-3 py-1 rounded-full uppercase leading-none font-sans rotate-2 shadow-sm animate-pulse">
+                  Conquered ✓
+                </span>
+              )}
+            </div>
+            <h4 className="text-2xl font-black font-sans leading-none tracking-tight pt-1">👑 THE OLYMPIAD CHAMPIONS ARENA 👑</h4>
+            <p className="text-xs text-yellow-50 leading-relaxed font-bold font-sans">
+              Test your logic with elite, extremely challenging Olympiad-standard mathematical puzzles covering all subjects!
+            </p>
+          </div>
+
+          {/* Body Content */}
+          <div className="p-6 bg-indigo-900/40 text-white space-y-5">
+            {/* Subject Tag Covers */}
+            <div className="space-y-2">
+              <span className="text-[11px] font-black uppercase tracking-widest text-yellow-300 font-sans block opacity-85">Includes Advanced Challenge Modules for:</span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Digit Logical Cryptarithms",
+                  "Sum of Prime Factors",
+                  "Telescoping Series",
+                  "Age/Ratio Shifts",
+                  "Consecutive Integer Product",
+                  "Double Successive Discounts",
+                  "Paved Square Path Area",
+                  "Fluid Conversion",
+                  "Venn Diagram Sets"
+                ].map((tag) => (
+                  <span key={tag} className="text-[10px] font-extrabold bg-indigo-950/60 text-white border border-indigo-800 px-3 py-1.5 rounded-xl font-sans shadow-sm">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Performance metrics & Action triggers */}
+            <div className="pt-5 border-t-2 border-indigo-800/60 flex items-center justify-between gap-3 flex-wrap">
+              <div className="text-xs font-black text-indigo-200 font-sans">
+                {progress.chapterScores["olympiad_arena"]?.total > 0 ? (
+                  <span className="bg-indigo-950/80 px-3 py-2 rounded-xl border border-indigo-800">
+                    Accuracy: <strong className="text-yellow-300">{(progress.chapterScores["olympiad_arena"]?.correct || 0)}/{(progress.chapterScores["olympiad_arena"]?.total || 0)} solved</strong>
+                    <span className="mx-2 text-indigo-600">|</span>
+                    XP: <strong className="text-yellow-300">{(progress.chapterScores["olympiad_arena"]?.xp || 0)} XP</strong>
+                  </span>
+                ) : (
+                  <span className="text-yellow-300 font-black flex items-center gap-1.5">
+                    🚀 Launch quest to earn the exclusive <strong className="underline text-white">Olympiad Conqueror Medal!</strong>
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  id="btn-infinite-olympiad"
+                  onClick={() => startChapterMission("olympiad_arena", true)}
+                  className="px-4 py-2.5 bg-indigo-950 hover:bg-indigo-900 border-2 border-indigo-800 text-white text-xs font-black rounded-2xl shadow-md transition-all cursor-pointer"
+                  title="Practice continuous random Olympiad challenges with step-by-step guidance."
+                >
+                  Olympiad Sandbox
+                </button>
+                <button
+                  id="btn-start-quest-olympiad"
+                  onClick={() => startChapterMission("olympiad_arena", false)}
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-indigo-950 text-xs font-black rounded-2xl border-2 border-yellow-300 hover:brightness-110 active:scale-95 transition shadow-lg flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Trophy size={11} fill="currentColor" />
+                  Elite 15-Q Quest
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

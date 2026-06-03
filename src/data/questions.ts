@@ -553,6 +553,23 @@ export function generateQuestion(chapterId: string, level: "easy" | "medium" | "
   const rand = Math.random();
   const id = `q_${chapterId}_${classLevel}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
+  if (chapterId === "olympiad_arena") {
+    const chaptersPool = [
+      "number_system",
+      "simplification",
+      "ratio",
+      "average",
+      "profit_loss",
+      "area_perimeter",
+      "measurements",
+      "data_analysis"
+    ];
+    const chosenChapter = chaptersPool[Math.floor(Math.random() * chaptersPool.length)];
+    const q = generateOlympiadQuestion(chosenChapter, classLevel, id);
+    q.chapterId = "olympiad_arena";
+    return q;
+  }
+
   if (level === "hard") {
     return generateOlympiadQuestion(chapterId, classLevel, id);
   }
@@ -1111,6 +1128,14 @@ export const ACHIEVEMENTS = [
     iconName: "Scale",
     colorClass: "bg-violet-50 text-violet-800 border-violet-200",
     xpThreshold: 750
+  },
+  {
+    id: "olympiad_conqueror",
+    title: "Olympiad Conqueror",
+    description: "Earn 200 XP playing the extremely difficult Olympiad Arena.",
+    iconName: "Trophy",
+    colorClass: "bg-amber-100/90 text-amber-900 border-amber-300",
+    xpThreshold: 200
   },
   {
     id: "math_genius",

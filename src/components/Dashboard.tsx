@@ -6,7 +6,7 @@
 import React from "react";
 import { UserProgress, Chapter } from "../types";
 import { ACHIEVEMENTS, getLevelTitle, calculateLevel } from "../data/questions";
-import { Calendar, Award, Star, History, Check, X, Shield, BookOpen, AlertCircle } from "lucide-react";
+import { Calendar, Award, Star, History, Check, X, Shield, BookOpen, AlertCircle, Trophy } from "lucide-react";
 
 interface DashboardProps {
   progress: UserProgress;
@@ -178,6 +178,36 @@ export default function Dashboard({ progress, chapters, onResetProgress, onNavig
                   </div>
                 );
               })}
+          </div>
+
+          {/* Olympiad Arena Prominent Section */}
+          <div 
+            id="olympiad-dashboard-card"
+            onClick={() => onNavigateToChapter("olympiad_arena")}
+            className="mt-6 p-6 rounded-[32px] bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 border-4 border-yellow-300 text-indigo-950 flex flex-col sm:flex-row justify-between items-center gap-4 hover:brightness-105 active:scale-[0.995] transition-all cursor-pointer shadow-lg relative overflow-hidden"
+          >
+            <div className="absolute right-0 bottom-0 opacity-10 translate-x-4 translate-y-4 text-7xl font-black select-none pointer-events-none">
+              🏆
+            </div>
+            <div className="space-y-1 relative z-10 text-center sm:text-left flex-1">
+              <span className="inline-flex items-center gap-1.5 text-[9px] font-black px-3 py-1 bg-yellow-400 text-amber-950 border-2 border-indigo-950 rounded-full uppercase font-sans tracking-wide">
+                <Trophy size={10} fill="currentColor" /> ⭐ ELITE OLYMPIAD CHALLENGE ARENA ⭐
+              </span>
+              <h4 className="text-xl font-black tracking-tight leading-snug text-indigo-950 pt-1">Olympiad Champions Practice</h4>
+              <p className="text-[11px] text-indigo-900 font-bold font-sans leading-snug">
+                Extremely difficult logical, geometric, average, and profit/loss problems for advanced minds.
+              </p>
+            </div>
+            
+            <div className="shrink-0 bg-indigo-950 text-white px-4 py-3 border border-yellow-400/30 rounded-2xl flex flex-col items-center gap-1 min-w-[120px] relative z-10 text-center shadow-md">
+              <span className="text-[9px] text-yellow-300 font-extrabold uppercase font-sans">Olympiad Score</span>
+              <strong className="text-sm font-sans font-black text-white">
+                ⭐ {(progress.chapterScores["olympiad_arena"]?.xp || 0)} XP
+              </strong>
+              <span className="text-[9px] opacity-75 font-sans font-bold">
+                {(progress.chapterScores["olympiad_arena"]?.correct || 0)}/{(progress.chapterScores["olympiad_arena"]?.total || 0)} Accurate
+              </span>
+            </div>
           </div>
 
           <div className="mt-6 p-4 bg-indigo-900/5 backdrop-blur-sm border-3 border-indigo-100 rounded-3xl flex items-center justify-between gap-4 flex-wrap md:flex-nowrap">
