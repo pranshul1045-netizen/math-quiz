@@ -41,17 +41,19 @@ export default function GameArea({
   const [correctCount, setCorrectCount] = useState(0);
   const [scoreHistory, setScoreHistory] = useState<boolean[]>([]);
   const [isInfiniteMode, setIsInfiniteMode] = useState(false);
+  const [isOlympiadActive, setIsOlympiadActive] = useState(false);
 
   // Initialize questions when starting a chapter
-  const startChapterMission = (chapterId: string, infinite = false) => {
+  const startChapterMission = (chapterId: string, infinite = false, olympiadMode = false) => {
     setIsInfiniteMode(infinite);
+    setIsOlympiadActive(olympiadMode);
     const count = infinite ? 1 : 15; // sets of 15 for quests
     const initialQuestions: MathQuestion[] = [];
     
     // Generate questions
     for (let i = 0; i < count; i++) {
-      // In Olympiad Arena, ALL questions are extremely difficult Olympiad-tier (hard). Otherwise standard progression.
-      const difficulty = chapterId === "olympiad_arena" ? "hard" : (i < 5 ? "easy" : i < 10 ? "medium" : "hard");
+      // If Olympiad Arena or if olympiadMode is true, ALL questions are extremely difficult Olympiad-tier (hard). Otherwise standard progression.
+      const difficulty = (chapterId === "olympiad_arena" || olympiadMode) ? "hard" : (i < 5 ? "easy" : i < 10 ? "medium" : "hard");
       initialQuestions.push(generateQuestion(chapterId, difficulty, progress.classLevel));
     }
     
@@ -155,7 +157,7 @@ export default function GameArea({
     
     if (isInfiniteMode) {
       // Infinite mode generates a new randomized question instantly
-      const difficulty = activeChapterId === "olympiad_arena" ? "hard" : "medium";
+      const difficulty = (activeChapterId === "olympiad_arena" || isOlympiadActive) ? "hard" : "medium";
       const nextQ = generateQuestion(activeChapterId!, difficulty, progress.classLevel);
       setQuestions([nextQ]);
       setCurrentQuestionIndex(0);
@@ -171,7 +173,7 @@ export default function GameArea({
       setIsCorrect(false);
       setShowHint(false);
     } else {
-      // Completed the 5-question chapter mission!
+      // Completed the chapter mission!
       onCompleteMission();
     }
   };
@@ -365,7 +367,7 @@ export default function GameArea({
                   </div>
 
                   {/* Actions Panel */}
-                  <div className="pt-5 border-t-2 border-indigo-50 flex items-center justify-between gap-3 flex-wrap">
+                  <div className="pt-4 border-t-2 border-indigo-50 space-y-3.5">
                     <div className="text-xs font-black text-indigo-900 font-sans">
                       {score.total > 0 ? (
                         <span className="bg-indigo-50 px-2.5 py-1.5 rounded-lg border border-indigo-100">
@@ -376,23 +378,57 @@ export default function GameArea({
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        id={`btn-infinite-${ch.id}`}
-                        onClick={() => startChapterMission(ch.id, true)}
-                        className="px-4 py-2.5 bg-white hover:bg-stone-50 border-3 border-indigo-900 text-indigo-950 text-xs font-black rounded-2xl shadow-[0_3px_0_0_#1e1b4b] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
-                        title="Randomized single puzzle practice Sandbox"
-                      >
-                        Sandbox
-                      </button>
-                      <button
-                        id={`btn-start-quest-${ch.id}`}
-                        onClick={() => startChapterMission(ch.id, false)}
-                        className={`px-5 py-2.5 bg-gradient-to-r ${ch.color} text-white text-xs font-black rounded-2xl border-2 border-indigo-950 transition shadow-[0_5px_0_0_#1e1b4b] hover:-translate-y-1 active:translate-y-0.5 active:shadow-none flex items-center gap-1.5 cursor-pointer`}
-                      >
-                        <Play size={12} fill="white" className="text-white" />
-                        Quest Map
-                      </button>
+                    {/* Standard/Olympiad Level Selector panel */}
+                    <div className="space-y-3 pt-1">
+                      {/* Standard Track */}
+                      <div className="flex items-center justify-between gap-2 border-b pb-2 border-indigo-50/65 flex-wrap sm:flex-nowrap">
+                        <span className="text-[10px] font-black text-indigo-400 font-sans tracking-wide uppercase">
+                          Standard Track
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            id={`btn-infinite-${ch.id}`}
+                            onClick={() => startChapterMission(ch.id, true, false)}
+                            className="px-3.5 py-1.5 bg-white hover:bg-stone-50 border-2 border-indigo-900 text-indigo-950 text-[11px] font-black rounded-xl shadow-[0_2px_0_0_#1e1b4b] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="Randomized single puzzle practice Sandbox"
+                          >
+                            Sandbox
+                          </button>
+                          <button
+                            id={`btn-start-quest-${ch.id}`}
+                            onClick={() => startChapterMission(ch.id, false, false)}
+                            className={`px-4 py-1.5 bg-gradient-to-r ${ch.color} text-white text-[11px] font-black rounded-xl border-2 border-indigo-950 transition shadow-[0_2px_0_0_#1e1b4b] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none flex items-center gap-1 cursor-pointer`}
+                          >
+                            <Play size={9} fill="white" className="text-white" />
+                            Quest Map
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Olympiad Track */}
+                      <div className="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+                        <span className="text-[10px] font-black text-amber-500 font-sans tracking-wide uppercase flex items-center gap-1">
+                          🏆 Olympiad Level
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            id={`btn-olympiad-infinite-${ch.id}`}
+                            onClick={() => startChapterMission(ch.id, true, true)}
+                            className="px-3.5 py-1.5 bg-white hover:bg-amber-50 border-2 border-amber-500 text-amber-800 text-[11px] font-black rounded-xl shadow-[0_2px_0_0_#b45309] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                            title="Practice infinitely with extremely challenging Olympiad questions"
+                          >
+                            Sandbox
+                          </button>
+                          <button
+                            id={`btn-olympiad-quest-${ch.id}`}
+                            onClick={() => startChapterMission(ch.id, false, true)}
+                            className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-indigo-950 text-[11px] font-black rounded-xl border-2 border-indigo-950 transition shadow-[0_2px_0_0_#1e1b4b] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none flex items-center gap-1 cursor-pointer"
+                          >
+                            <Trophy size={9} fill="currentColor" />
+                            Olympiad
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -406,7 +442,14 @@ export default function GameArea({
 
   // Active quiz board view
   return (
-    <div id="active-math-board" className="bg-white text-indigo-950 rounded-[40px] border-4 border-indigo-900 p-6 md:p-8 space-y-8 shadow-[0_16px_0_0_#1e1b4b] relative">
+    <div 
+      id="active-math-board" 
+      className={`bg-white text-indigo-950 rounded-[40px] border-4 ${
+        (activeChapterId === "olympiad_arena" || isOlympiadActive)
+          ? "border-yellow-400 shadow-[0_16px_0_0_#312e81]" 
+          : "border-indigo-900 shadow-[0_16px_0_0_#1e1b4b]"
+      } p-6 md:p-8 space-y-8 relative`}
+    >
       
       {/* Quiz Top Metadata HUD */}
       <div className="flex items-center justify-between bg-indigo-50/75 p-4.5 border-3 border-indigo-200 rounded-3xl flex-wrap gap-4">
@@ -425,7 +468,14 @@ export default function GameArea({
             <span className="text-[10px] font-black text-indigo-500 uppercase tracking-widest font-sans leading-none block">
               Active Category:
             </span>
-            <span className="text-base font-black text-indigo-950 font-sans leading-none">{activeChapter?.name}</span>
+            <span className="text-base font-black text-indigo-950 font-sans leading-none flex items-center gap-2 flex-wrap">
+              {activeChapter?.name}
+              {(activeChapterId === "olympiad_arena" || isOlympiadActive) && (
+                <span className="inline-flex items-center gap-1 text-[9px] font-black px-2.5 py-0.5 bg-yellow-400 text-amber-950 border-2 border-indigo-950 rounded-full uppercase tracking-wide">
+                  <Trophy size={9} fill="currentColor" /> ELITE OLYMPIAD
+                </span>
+              )}
+            </span>
           </div>
         </div>
 
